@@ -138,6 +138,7 @@
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\Site.css" />
     <Content Include="Content\themes\base\images\animated-overlay.gif" />
     <Content Include="Content\themes\base\images\ui-bg_flat_0_aaaaaa_40x100.png" />
@@ -214,6 +215,9 @@
     <Content Include="Account\Register.cshtml" />
     <Content Include="About.cshtml" />
     <Content Include="Contact.cshtml" />
+    <Content Include="Account\Inbox.cshtml" />
+    <Content Include="Account\Outbox.cshtml" />
+    <Content Include="Account\NewMessage.cshtml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
