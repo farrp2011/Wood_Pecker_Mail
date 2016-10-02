@@ -6,7 +6,7 @@
 <html lang="en">
     <head>
         <meta charset="utf-8" />
-        <title>@Page.Title - My ASP.NET Web Page</title>
+        <title>@Page.Title - Woodpecker Mail</title>
         <link href="~/Content/themes/base/jquery.ui.all.css" rel="stylesheet" type="text/css" />
         <link href="~/Content/Site.css" rel="stylesheet" type="text/css" />
         <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
@@ -19,7 +19,7 @@
         <header>
             <div class="content-wrapper">
                 <div class="float-left">
-                    <p class="site-title"><a href="~/">your logo here</a></p>
+                    <p class="site-title"><a href="~/">Woodpecker Mail</a></p>
                 </div>
                 <div class="float-right">
                     <section id="login">
@@ -41,8 +41,13 @@
                     <nav>
                         <ul id="menu">
                             <li><a href="~/">Home</a></li>
-                            <li><a href="~/About">About</a></li>
-                            <li><a href="~/Contact">Contact</a></li>
+                            <li><a href="~/Learn">Learn</a></li>
+                            <!--Need to not display if not a user not signed in-->
+                            <li><a href="~/Account/Inbox">Inbox</a></li>
+                            <li><a href="~/Account/Outbox">Outbox</a></li>
+                            <li><a href="~/Account/NewMessage">New Message</a></li>
+                            <!--End if not signed in-->
+                            <li><a href="~/Support">Support</a></li>
                         </ul>
                     </nav>
                 </div>
@@ -57,7 +62,7 @@
         <footer>
             <div class="content-wrapper">
                 <div class="float-left">
-                    <p>&copy; @DateTime.Now.Year - My ASP.NET Web Page</p>
+                    <p>&copy; @DateTime.Now.Year - Wood Pecker Mail - Paul Farr</p>
                 </div>
             </div>
         </footer>

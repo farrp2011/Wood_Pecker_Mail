@@ -213,8 +213,8 @@
     <Content Include="Account\Manage.cshtml" />
     <Content Include="Account\PasswordReset.cshtml" />
     <Content Include="Account\Register.cshtml" />
-    <Content Include="About.cshtml" />
-    <Content Include="Contact.cshtml" />
+    <Content Include="Learn.cshtml" />
+    <Content Include="Support.cshtml" />
     <Content Include="Account\Inbox.cshtml" />
     <Content Include="Account\Outbox.cshtml" />
     <Content Include="Account\NewMessage.cshtml" />

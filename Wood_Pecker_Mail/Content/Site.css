@@ -312,6 +312,7 @@ article {
 aside {
     float: right;
     width: 25%;
+    padding-right: 1.5em;
 }
 
     aside ul {
@@ -532,13 +533,14 @@ table {
     border-spacing: 0;
     margin-top: 0.75em;
     border: 0 none;
+    margin-left: 4em;
 }
 
 th {
     font-size: 1.2em;
     text-align: left;
     border: none 0px;
-    padding-left: 0;
+    padding-left: 0px;
 }
 
     th a {
@@ -578,6 +580,7 @@ th {
     }
 
 td {
+    font-size: 1.9em;
     padding: 0.25em 2em 0.25em 0em;
     border: 0 none;
 }
