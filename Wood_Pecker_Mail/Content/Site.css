@@ -213,7 +213,7 @@ ul#menu {
 }
 
     .featured .content-wrapper {
-        background-color: #7ac0da;
+        background-color: #A91115;
         background-image: -ms-linear-gradient(left, #7ac0da 0%, #a4d4e6 100%);
         background-image: -o-linear-gradient(left, #7ac0da 0%, #a4d4e6 100%);
         background-image: -webkit-gradient(linear, left top, right top, color-stop(0, #7ac0da), color-stop(1, #a4d4e6));
@@ -229,6 +229,7 @@ ul#menu {
 
         .featured p {
             font-size: 1.1em;
+            color: black;
         }
 
 /* page titles */
@@ -580,9 +581,25 @@ th {
     }
 
 td {
-    font-size: 1.9em;
     padding: 0.25em 2em 0.25em 0em;
     border: 0 none;
+}
+
+article td{
+    font-size: 1.9em;
+}
+
+aside tr{
+    font-size: .9em;
+    padding-bottom: 1em;
+}
+
+aside tr:hover {
+    background-color: lightslategray;
+}
+
+aside tr:first-child:hover {
+    background-color: inherit;
 }
 
 tr.pager td {
@@ -756,4 +773,20 @@ tr.pager td {
         footer p {
             margin: 0;
         }
+}
+
+div.uneditableTextBox{
+    border-style: solid;
+    border-width:thin;
+    border-color: ActiveBorder;
+
+    background-color: white;
+    height: 1.5em;
+
+    display:inline-block;
+    width:100%
+}
+
+button.float-right, button.float-left{
+    font-size: .8em;
 }
