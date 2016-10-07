@@ -4,20 +4,259 @@
 
 <hgroup class="title">
     <h1>@Page.Title.</h1>
-    <h2>Your contact page.</h2>
+    <h2></h2>
 </hgroup>
 
-<article>
+<script>
+
+
+	    var first;
+	    var second;
+	    var third;
+
+
+	    function Telegraph(latin, morse)
+	    {
+		this.latinOutput = latin;
+		this.morseOutput = morse;
+
+		this.pressTime = -1;
+		this.spaceTime = 0;
+		this.message;
+		this._dit = ".";
+		this._dash = "-";
+		this._no_space = "";
+		this._letter = "&nbsp;";//used at the end of letters
+		this._word = "&nbsp;&nbsp;";//used at the end of words
+		this._NA = "N/A";//something went worng
+
+		//time in millsec
+		this._DIT_TIME = 160;
+		this._DASH_TIME = this._DASH_TIME *3;
+		this._NEW_LETTER_TIME = this._DIT_TIME *4;//for between letters
+		this._WORD_SPACE_TIME = this._DIT_TIME *8;//for between words
+
+		//morseCodeBuffer is going to be used as a intermeit between readable letters
+		//and the dits and dashes. Everytime a letter is discovered the buffer will
+		//be emptyed and it will get new stuff
+		this.morseCodeBuffer = "";
+		this.outbuffer = "";//this is the readable morse code
+
+		this.codesArr = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N","O", "P", "Q", "R", "S", "T", "U", "V", "W", "X","Y", "Z"];
+		this.lettersArr = [
+		    /*A*/this._dit+this._dash,
+		    /*B*/this._dash+this._dit+this._dit+this._dit,
+		    /*C*/this._dash+this._dit+this._dash+this._dit,
+		    /*D*/this._dash+this._dit+this._dit,
+		    /*E*/this._dit,
+		    /*F*/this._dit+this._dit+this._dash+this._dit,
+		    /*G*/this._dash+this._dash+this._dit,
+		    /*H*/this._dit+this._dit+this._dit+this._dit,
+		    /*I*/this._dit+this._dit,
+		    /*J*/this._dit+this._dash+this._dash+this._dash,
+		    /*K*/this._dash+this._dit+this._dash,
+		    /*L*/this._dit+this._dash+this._dit+this._dit,
+		    /*M*/this._dash+this._dash,
+		    /*N*/this._dash+this._dit,
+		    /*O*/this._dash+this._dash+this._dash,
+		    /*P*/this._dit+this._dash+this._dash+this._dit,
+		    /*Q*/this._dash+this._dash+this._dit+this._dash,
+		    /*R*/this._dit+this._dash+this._dit,
+		    /*S*/this._dit+this._dit+this._dit,
+		    /*T*/this._dash,
+		    /*U*/this._dit+this._dit+this._dash,
+		    /*V*/this._dit+this._dit+this._dit+this._dash,
+		    /*W*/this._dit+this._dash+this._dash,
+		    /*X*/this._dash+this._dit+this._dit+this._dash,
+		    /*Y*/this._dash+this._dit+this._dash+this._dash,
+		    /*Z*/this._dash+this._dash+this._dit+this._dit];
+	    }
+
+
+	    /*---Telegraph Functions---*/
+
+	    function buildString(theTelegraph)
+	    {
+		/*
+		 * This function will run every few milliseconds and try to make
+		 * the dits and dashes into letter.
+		 */
+
+		//only time we are going to look at makeing a letter
+		if(getTime() - theTelegraph.spaceTime > theTelegraph._NEW_LETTER_TIME)
+		{
+		    //console.log("ping");
+		    var i;
+		    for( i=0 ; i < theTelegraph.lettersArr.length ; i++ )
+		    {
+			if(theTelegraph.lettersArr[i] === theTelegraph.morseCodeBuffer)
+			{
+			    output(theTelegraph,"", theTelegraph.codesArr[i]);
+			    theTelegraph.morseCodeBuffer = "";//clear buffer
+			    /*
+			     * if we made it here everything went well
+			     */
+			    setTimeout(buildString, theTelegraph._DIT_TIME, theTelegraph);//recall myself in a few millsec
+			    return ;
+			}
+
+		    }
+		    /*
+		     *if we are here the usered did not type in good input
+		     * or we have a empty buffer
+		     */
+
+		    if(theTelegraph.morseCodeBuffer !== "")
+		    {
+			//here the buffer is not empty and the user stoped typing
+
+			output(theTelegraph,"", "?");
+			theTelegraph.morseCodeBuffer = "";
+		    }
+		}
+
+
+
+		setTimeout(buildString, theTelegraph._DIT_TIME, theTelegraph);//recall myself in a few millsec
+	    }
+
+	    function mouseDown(theTelegraph)
+	    {
+		theTelegraph.pressTime = getTime();
+		//console.log("\tBeging of click "+getTime());
+
+		//console.log("PressTime ="+pressTime);
+
+		var typeOfCode;
+		var len = getTime() - theTelegraph.spaceTime;//lengh of time since the button was last pressed
+
+		//console.log("time of space ="+spaceTime);
+
+		//if the space time was greater than _NEW_LETTER_TIME
+		if(len <= theTelegraph._NEW_LETTER_TIME)//bad stuff
+		{
+		    typeOfCode = theTelegraph._no_space;
+		}
+		else if(len > theTelegraph._NEW_LETTER_TIME && len <= theTelegraph._WORD_SPACE_TIME)//this time is greater than the other
+		{
+		    typeOfCode = theTelegraph._letter;
+		}
+		else
+		{
+		    typeOfCode = theTelegraph._word;
+		    output(theTelegraph,"", theTelegraph._letter);//add space to latin output to
+		}
+
+		//console.log("Druing Space: "+ len);
+		output(theTelegraph,typeOfCode, "");
+		theTelegraph.spaceTime = Number.MAX_VALUE;//so the builder function won't fire
+
+	    }
+
+	    function mouseUp(theTelegraph)
+	    {
+
+		//console.log("spaceTime ="+spaceTime);
+		var len;//length of button press
+
+		var typeOfCode;
+		if(theTelegraph.pressTime === -1)//bad stuff
+		{
+		    //console.log("Bad Stuff");
+		    return;
+
+		}
+
+
+		len = getTime() - theTelegraph.pressTime;
+
+		//console.log("Click Time: "+len);
+
+		if(len < theTelegraph._DIT_TIME)
+		{
+		    typeOfCode = theTelegraph._dit;
+		}
+		else if(len >= theTelegraph._DIT_TIME )
+		{
+		    typeOfCode = theTelegraph._dash;
+		}
+		else
+		{
+		    typeOfCode = theTelegraph._NA;
+		}
+		output(theTelegraph, typeOfCode, "");
+		//console.log("\tEnd of Click "+getTime());
+		theTelegraph.pressTime = -1;
+		theTelegraph.spaceTime = getTime();
+	    }
+
+
+
+	    /*function seeTime()
+	    {
+		console.log("\t\t"+getTime());
+		console.log("Buffer = " + morseCodeBuffer);
+		console.log("SpaceTime = " + spaceTime);
+		console.log("SpaceLenth = "+ getTime() - spaceTime);
+		var i = 0;
+		for( i=0 ; i<codesArr.length ; i++ )
+		{
+		    console.log(codesArr[i]+" = "+lettersArr[i]);
+		}
+	    }*/
+
+	    function output(theTelegraph, morseCode, latin)
+	    {
+		/*This function writes everything out to were it need to be*/
+		var x = document.getElementById(theTelegraph.latinOutput);
+		var z = document.getElementById(theTelegraph.morseOutput);
+
+		//add to the buffer
+		if(morseCode !== theTelegraph._letter && morseCode !== theTelegraph._word)//will not add spaces to buffer
+		{
+		    theTelegraph.morseCodeBuffer = theTelegraph.morseCodeBuffer + morseCode;
+		}
+		x.innerHTML = document.getElementById(theTelegraph.latinOutput).innerHTML + latin;
+		z.innerHTML = document.getElementById(theTelegraph.morseOutput).innerHTML + morseCode;
+
+	    }
+
+	    function getTime()
+	    {
+		var d = new Date().getTime();
+
+		return(d);
+	    }
+
+	    /*---End OF Telegraph Functions---*/
+
+	    var subject;
+	    var morseCodeBody;
+
+	    function onLoad()
+	    {
+
+	        subject = new Telegraph("latin_subject", "morse_subject");
+	        morseCodeBody = new Telegraph("latin_body", "morse_body");
+
+
+		    buildString(subject);
+		    buildString(morseCodeBody);
+
+	    }
+</script>
+
+<article >
     
     <h6>To: <input type="text"/></h6>
     <h6>Subject: </h6>
-    <p>Latin Alphabet:</p><div class="uneditableTextBox" id="MessageSubject"></div>
-    <p>Morse Code:</p><div class="uneditableTextBox" id="MorseSubject"></div>
-    <button class="float-right">Telegraph</button>
+    <p>Latin Alphabet:</p><div class="uneditableTextBoxSmall" ><p id="latin_subject"></p></div>
+    <p>Morse Code:</p><div class="uneditableTextBoxSmall" id="MorseSubject"><p id="morse_subject"></p></div>
+    <button class="float-right" onmousedown="mouseDown(subject)" onmouseup="mouseUp(subject)">Telegraph</button>
     <h6>Message:</h6>
-    <p>Latin Alphabet:</p><div class="uneditableTextBox" id="MessageBody"></div>
-    <p>Morse Code:</p><div class="uneditableTextBox" id="MorseBody"></div>
-    <button class="float-right">Telegraph</button>
+    <p>Latin Alphabet:</p><div class="uneditableTextBox"><p id="latin_body"></p></div>
+    <p>Morse Code:</p><div class="uneditableTextBox"><p id="morse_body"></p></div>
+    <button class="float-right" onmousedown="mouseDown(morseCodeBody)" onmouseup="mouseUp(morseCodeBody)">Telegraph</button>
     <form>
         <input type="hidden" name="MessageSubject" />
         <input type="hidden" name="MessageBody" />

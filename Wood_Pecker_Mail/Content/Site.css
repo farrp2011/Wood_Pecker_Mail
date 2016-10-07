@@ -775,16 +775,39 @@ tr.pager td {
         }
 }
 
+
+
 div.uneditableTextBox{
     border-style: solid;
     border-width:thin;
     border-color: ActiveBorder;
 
     background-color: white;
-    height: 1.6em;
+    height: 6em;
 
     display:inline-block;
     width:100%
+}
+
+div.uneditableTextBoxSmall{
+    border-style: solid;
+    border-width:thin;
+    border-color: ActiveBorder;
+
+    background-color: white;
+    height: 2.8em;
+
+    display:inline-block;
+    width:100%
+}
+
+div.uneditableTextBox p{
+    overflow: auto;
+    word-wrap: break-word;
+    height: inherit;
+    width : 100%;
+    padding: 0px;
+    margin: 0px;
 }
 
 button.float-right, button.float-left{
