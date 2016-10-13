@@ -15,7 +15,8 @@
     var third;
 
 
-    function Telegraph(latin, morse) {
+    function Telegraph(latin, morse, hidden) {
+        this.hiddenField = hidden;
         this.latinOutput = latin;
         this.morseOutput = morse;
 
@@ -25,7 +26,7 @@
         this._dit = ".";
         this._dash = "-";
         this._no_space = "";
-        this._letter = "&nbsp;";//used at the end of letters
+        this._letter = " ";//used at the end of letters
         this._word = "&nbsp;&nbsp;";//used at the end of words
         this._NA = "N/A";//something went worng
 
@@ -178,24 +179,10 @@
         theTelegraph.spaceTime = getTime();
     }
 
-
-
-    /*function seeTime()
-    {
-    console.log("\t\t"+getTime());
-    console.log("Buffer = " + morseCodeBuffer);
-    console.log("SpaceTime = " + spaceTime);
-    console.log("SpaceLenth = "+ getTime() - spaceTime);
-    var i = 0;
-    for( i=0 ; i<codesArr.length ; i++ )
-    {
-        console.log(codesArr[i]+" = "+lettersArr[i]);
-    }
-    }*/
-
     function output(theTelegraph, morseCode, latin) {
         /*This function writes everything out to were it need to be*/
         var x = document.getElementById(theTelegraph.latinOutput);
+        //var y = document.getElementById(theTelegraph.hiddenField);
         var z = document.getElementById(theTelegraph.morseOutput);
 
         //add to the buffer
@@ -203,9 +190,14 @@
         {
             theTelegraph.morseCodeBuffer = theTelegraph.morseCodeBuffer + morseCode;
         }
-        x.innerHTML = document.getElementById(theTelegraph.latinOutput).innerHTML + latin;
-        z.innerHTML = document.getElementById(theTelegraph.morseOutput).innerHTML + morseCode;
 
+        
+        x.innerHTML = document.getElementById(theTelegraph.latinOutput).innerHTML + latin;
+        
+        z.innerHTML = document.getElementById(theTelegraph.morseOutput).innerHTML + morseCode;
+        
+        document.getElementById(theTelegraph.hiddenField).value = document.getElementById(theTelegraph.hiddenField).value + latin;
+        
     }
 
     function getTime() {
@@ -221,31 +213,41 @@
 
     function onLoad() {
 
-        subject = new Telegraph("latin_subject", "morse_subject");
-        morseCodeBody = new Telegraph("latin_body", "morse_body");
+        subject = new Telegraph("latin_subject", "morse_subject", "hidden_subject");
+        morseCodeBody = new Telegraph("latin_body", "morse_body", "hidden_body");
 
 
         buildString(subject);
         buildString(morseCodeBody);
 
     }
+
+    function displaySomeStuff()
+    {
+        console.log(document.getElementById("hidden_subject").value);
+        console.log(document.getElementById("hidden_body").value);
+    }
+
+
 </script>
 
 <article>
-
-    <h6>To: <input type="text" /></h6>
-    <h6>Subject: </h6>
-    <p>Latin Alphabet:</p><div class="uneditableTextBoxSmall"><p id="latin_subject"></p></div>
-    <p>Morse Code:</p><div class="uneditableTextBoxSmall" id="MorseSubject"><p id="morse_subject"></p></div>
-    <button class="float-right" onmousedown="mouseDown(subject)" onmouseup="mouseUp(subject)">Telegraph</button>
-    <h6>Message:</h6>
-    <p>Latin Alphabet:</p><div class="uneditableTextBox"><p id="latin_body"></p></div>
-    <p>Morse Code:</p><div class="uneditableTextBox"><p id="morse_body"></p></div>
-    <button class="float-right" onmousedown="mouseDown(morseCodeBody)" onmouseup="mouseUp(morseCodeBody)">Telegraph</button>
-    <form>
-        <input type="hidden" name="MessageSubject" />
-        <input type="hidden" name="MessageBody" />
-        <button class="float-left">Submit</button>
-
+    <form method="post" action="~/Account/MessageSent.cshtml" name="sendMessage" id="sendMessage">
+        <input value="" type="hidden" id="hidden_subject" name="MessageSubject" >
+        <input value="" type="hidden" id="hidden_body" name="MessageBody" >
+        <h6>To: <input type="text" name="to"></h6>
+        <h6>Subject: </h6>
+        <p>Latin Alphabet:</p><div class="uneditableTextBoxSmall"><p id="latin_subject"></p></div>
+        <p>Morse Code:</p><div class="uneditableTextBoxSmall" id="MorseSubject"><p id="morse_subject"></p></div>
+        <button type="button" class="float-right" onmousedown="mouseDown(subject)" onmouseup="mouseUp(subject)">Telegraph</button>
+        <h6>Message:</h6>
+        <p>Latin Alphabet:</p><div class="uneditableTextBox"><p id="latin_body"></p></div>
+        <p>Morse Code:</p><div class="uneditableTextBox"><p id="morse_body"></p></div>
+        <button type="button" class="float-right" onmousedown="mouseDown(morseCodeBody)" onmouseup="mouseUp(morseCodeBody)">Telegraph</button>
+        
+        
+        <button type="submit" class="float-left">Submit</button>
+        
     </form>
+    <button onclick="displaySomeStuff()">Display Some Stuff</button>
 </article>

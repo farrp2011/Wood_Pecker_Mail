@@ -138,10 +138,11 @@
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Admin\delete_messages.html" />
-    <Content Include="Admin\delete_users.html" />
-    <Content Include="Admin\promote_users.html" />
-    <Content Include="Admin\welcom.html" />
+    <None Include="Admin\delete_messages.cshtml" />
+    <None Include="Admin\delete_users.cshtml" />
+    <None Include="Admin\promote_users.cshtml" />
+    <None Include="Admin\welcom.cshtml" />
+    <None Include="Account\MessageSent.cshtml" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\Site.css" />
     <Content Include="Content\themes\base\images\animated-overlay.gif" />
@@ -253,6 +254,13 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="App_Code\Startup.cs" />
+    <Compile Include="Account\MessageSent.aspx.cs">
+      <DependentUpon>MessageSent.cshtml</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Account\MessageSent.aspx.designer.cs">
+      <DependentUpon>MessageSent.cshtml</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
