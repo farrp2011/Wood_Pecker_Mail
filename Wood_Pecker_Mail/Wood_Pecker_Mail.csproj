@@ -254,13 +254,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="App_Code\Startup.cs" />
-    <Compile Include="Account\MessageSent.aspx.cs">
-      <DependentUpon>MessageSent.cshtml</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Account\MessageSent.aspx.designer.cs">
-      <DependentUpon>MessageSent.cshtml</DependentUpon>
-    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
