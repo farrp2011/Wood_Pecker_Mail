@@ -1,17 +1,23 @@
 ﻿@{
+
+    if (!User.Identity.IsAuthenticated)//User Must be login to be here
+    {
+        Response.Redirect("~/Account/Login");
+    }
+
     Page.Title = "Sent!";
-    
+
     string toSomeone = "";
     string messSubject = "";
     string messBody = "";
 
-    if(IsPost)
+    if (IsPost)
     {
         toSomeone = this.Request["to"];
         messSubject = this.Request["MessageSubject"];
         messBody = this.Request["MessageBody"];
         //console.console.writeline(messBody);
-        
+
     }
     else
     {

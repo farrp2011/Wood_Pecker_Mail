@@ -1,4 +1,10 @@
 ﻿@{
+
+    if (!User.Identity.IsAuthenticated)//User Must be login to be here
+    {
+        Response.Redirect("~/Account/Login");
+    }
+
     Page.Title = "New Message";
 }
 

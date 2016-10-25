@@ -42,10 +42,13 @@
                         <ul id="menu">
                             <li><a href="~/">Home</a></li>
                             <li><a href="~/Learn">Learn</a></li>
-                            <!--Need to not display if not a user not signed in-->
-                            <li><a href="~/Account/Inbox">Inbox</a></li>
-                            <li><a href="~/Account/Outbox">Outbox</a></li>
-                            <li><a href="~/Account/NewMessage">New Message</a></li>
+                            <!--Will not display if user not signed in-->
+                            @if (User.Identity.IsAuthenticated)//User Must be login to be here
+                            {
+                                <li><a href="~/Account/Inbox">Inbox</a></li>
+                                <li><a href="~/Account/Outbox">Outbox</a></li>
+                                <li><a href="~/Account/NewMessage">New Message</a></li>
+                            }
                             <!--End if not signed in-->
                             <li><a href="~/Support">Support</a></li>
                         </ul>
