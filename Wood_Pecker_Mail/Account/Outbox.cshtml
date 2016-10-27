@@ -1,4 +1,7 @@
-﻿@{
+﻿@using Wood_Pecker_Mail
+@{
+    int activeMessageID = 0;
+    const string MESSAGE_VAULE = "messageValue";
 
     if (!User.Identity.IsAuthenticated)//User Must be login to be here
     {
@@ -6,6 +9,30 @@
     }
 
     Page.Title = "Outbox";
+
+    //get messages from database
+    MessagesDB[] theirInbox = DataBaseHelper.getInbox();
+    //store in something awsome
+
+    //next we need to look at the post
+
+    if (IsPost)
+    {
+        //also need to make sure the user is only looking at there own messages
+
+        if (!this.Request[MESSAGE_VAULE].IsInt())
+        {
+            Response.Redirect("~/Default");//Just don't want to deal with you hackers right now
+        }
+
+        activeMessageID = Int32.Parse(this.Request[MESSAGE_VAULE]);//we know this is a int or we would be on the homepage(fingers crossed)
+
+
+
+
+    }
+
+
 }
 
 <hgroup class="title">
@@ -14,12 +41,19 @@
 </hgroup>
 
 <article>
-    <p><strong>To: </strong>Diego</p>
-    <p><strong>Subject: </strong>Dear Diego</p>
-    <p>
-        Diego.</br>
-        Truth is, so great, that I wouldn’t like to speak, or sleep, or listen, or love. To feel myself trapped, with no fear of blood, outside time and magic, within your own fear, and your great anguish, and within the very beating of your heart. All this madness, if I asked it of you, I know, in your silence, there would be only confusion. I ask you for violence, in the nonsense, and you, you give me grace, your light and your warmth. I’d like to paint you, but there are no colors, because there are so many, in my confusion, the tangible form of my great love.
-    </p>
+    @for (int i = 0; i < theirInbox.Length; i++)
+    {
+        if (theirInbox[i].getId() == activeMessageID)
+        {
+            <p><strong>From: </strong>@theirInbox[i].getfromUser()</p>
+            <p><strong>Subject: </strong>@theirInbox[i].getSubjectLine()</p>
+            <p>@theirInbox[i].getBodyOfMessage()</p>
+            <p id="data"> </p>
+            <script>
+            document.getElementById("data").innerHTML = Date(@theirInbox[i].getTimeStamp());
+            </script>
+        }
+    }
 </article>
 <aside>
     <table>
@@ -27,22 +61,24 @@
             <th>To</th>
             <th>Subject</th>
         </tr>
-        <tr onclick="window.document.location = 'Inbox';">
-            <td>Pablo Picasso</td>
-            <td>Spanish paintings</td>
-        </tr>
-        <tr onclick="window.document.location = 'Inbox';">
-            <td>Leonardo da Vinci</td>
-            <td>Renaissance Man</td>
-        </tr>
-        <tr onclick="window.document.location = 'Inbox';">
-            <td>Frida Kahlo</td>
-            <td>Dear Diego</td>
-        </tr>
-        <tr onclick="window.document.location = 'Inbox';">
-            <td>Edward Hopper</td>
-            <td>French and Russian culture</td>
-        </tr>
+        @foreach (MessagesDB singleMessage in theirInbox)
+        {
+
+            <tr onclick="submitTheOnClick(@singleMessage.getId())">
+                <td>@singleMessage.getfromUser()</td>
+                <td>@singleMessage.getSubjectLine()</td>
+            </tr>
+            <form id="@singleMessage.getId()" method="post">
+                <input type="hidden" name="@MESSAGE_VAULE" value="@singleMessage.getId()" />
+            </form>
+        }
 
     </table>
+
+    <script>
+        function submitTheOnClick(name)
+            {
+                document.getElementById(name).submit();
+            }
+    </script>
 </aside>

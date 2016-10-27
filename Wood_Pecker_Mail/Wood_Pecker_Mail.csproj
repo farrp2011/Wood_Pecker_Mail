@@ -143,6 +143,7 @@
     <None Include="Admin\promote_users.cshtml" />
     <None Include="Admin\welcom.cshtml" />
     <None Include="Account\MessageSent.cshtml" />
+    <Compile Include="DataBaseHelper.cs" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\Site.css" />
     <Content Include="Content\themes\base\images\animated-overlay.gif" />
