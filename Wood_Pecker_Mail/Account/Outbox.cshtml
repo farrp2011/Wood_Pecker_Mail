@@ -1,5 +1,7 @@
 ﻿@using Wood_Pecker_Mail
 @{
+
+    const string DATE_NAME = "date";
     int activeMessageID = 0;
     const string MESSAGE_VAULE = "messageValue";
 
@@ -45,13 +47,12 @@
     {
         if (theirInbox[i].getId() == activeMessageID)
         {
-            <p><strong>From: </strong>@theirInbox[i].getfromUser()</p>
+            <p><strong>To: </strong>@theirInbox[i].getfromUser()</p>
             <p><strong>Subject: </strong>@theirInbox[i].getSubjectLine()</p>
             <p>@theirInbox[i].getBodyOfMessage()</p>
             <p id="data"> </p>
-            <script>
-            document.getElementById("data").innerHTML = Date(@theirInbox[i].getTimeStamp());
-            </script>
+            <script src="~/Scripts/displayDate.js"></script>
+            <script>displayDate("@DATE_NAME", @theirInbox[i].getTimeStamp());</script>
         }
     }
 </article>
@@ -64,21 +65,24 @@
         @foreach (MessagesDB singleMessage in theirInbox)
         {
 
-            <tr onclick="submitTheOnClick(@singleMessage.getId())">
-                <td>@singleMessage.getfromUser()</td>
-                <td>@singleMessage.getSubjectLine()</td>
-            </tr>
-            <form id="@singleMessage.getId()" method="post">
-                <input type="hidden" name="@MESSAGE_VAULE" value="@singleMessage.getId()" />
-            </form>
+        <tr onclick="submitTheOnClick(@singleMessage.getId())">
+            <td>@singleMessage.getfromUser()</td>
+            <td>
+                @singleMessage.getSubjectLine()
+                <form id="@singleMessage.getId()" method="post">
+                    <input type="hidden" name="@MESSAGE_VAULE" value="@singleMessage.getId()" />
+                </form>
+            </td>
+        </tr>
+        
         }
 
     </table>
 
     <script>
         function submitTheOnClick(name)
-            {
-                document.getElementById(name).submit();
-            }
+        {
+            document.getElementById(name).submit();
+        }
     </script>
 </aside>

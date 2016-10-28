@@ -1,7 +1,7 @@
 ﻿@using Wood_Pecker_Mail
 @{
 
-
+    const string DATE_NAME = "date";
     int activeMessageID = 0;
     const string MESSAGE_VAULE = "messageValue";
     if (!User.Identity.IsAuthenticated)//User Must be login to be here
@@ -17,19 +17,16 @@
 
     //next we need to look at the post
 
-    if(IsPost)
+    if (IsPost)
     {
         //also need to make sure the user is only looking at there own messages
 
-        if(!this.Request[MESSAGE_VAULE].IsInt())
+        if (!this.Request[MESSAGE_VAULE].IsInt())
         {
             Response.Redirect("~/Default");//Just don't want to deal with you hackers right now
         }
 
         activeMessageID = Int32.Parse(this.Request[MESSAGE_VAULE]);//we know this is a int or we would be on the homepage(fingers crossed)
-
-
-
 
     }
 
@@ -45,15 +42,14 @@
 <article>
     @for (int i = 0; i < theirInbox.Length; i++)
     {
-        if(theirInbox[i].getId() == activeMessageID)
-        { 
-        <p><strong>From: </strong>@theirInbox[i].getfromUser()</p>
-        <p><strong>Subject: </strong>@theirInbox[i].getSubjectLine()</p>
-        <p>@theirInbox[i].getBodyOfMessage()</p>
-        <p id="data"> </p>
-<script>
-            document.getElementById("data").innerHTML = Date(@theirInbox[i].getTimeStamp());
-</script>
+        if (theirInbox[i].getId() == activeMessageID)
+        {
+            <p><strong>From: </strong>@theirInbox[i].getfromUser()</p>
+            <p><strong>Subject: </strong>@theirInbox[i].getSubjectLine()</p>
+            <p>@theirInbox[i].getBodyOfMessage()</p>
+            <p id="@DATE_NAME"> </p><p>@theirInbox[i].getTimeStamp()</p>
+            <script src="~/Scripts/displayDate.js"></script>
+            <script>displayDate("@DATE_NAME", @theirInbox[i].getTimeStamp());</script>
         }
     }
 </article>
@@ -66,25 +62,28 @@
             <th>From</th>
             <th>Subject</th>
         </tr>
-        
+
         @foreach (MessagesDB singleMessage in theirInbox)
         {
-        
-        <tr onclick="submitTheOnClick(@singleMessage.getId())">
+
+            <tr onclick="submitTheOnClick(@singleMessage.getId())">
                 <td>@singleMessage.getfromUser()</td>
-                <td>@singleMessage.getSubjectLine()</td>
+                <td>
+                    @singleMessage.getSubjectLine()
+                <form id="@singleMessage.getId()" method="post">
+                    <input type="hidden" name="@MESSAGE_VAULE" value="@singleMessage.getId()" />
+                </form>
+            </td>
         </tr>
-        <form id="@singleMessage.getId()" method="post">
-            <input type="hidden" name="@MESSAGE_VAULE" value="@singleMessage.getId()" />
-        </form>
+
         }
-        
-        
+
+
     </table>
     <script>
         function submitTheOnClick(name)
-            {
-                document.getElementById(name).submit();
-            }
+        {
+            document.getElementById(name).submit();
+        }
     </script>
 </aside>

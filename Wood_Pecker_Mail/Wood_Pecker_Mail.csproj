@@ -220,6 +220,7 @@
     <Content Include="Account\PasswordReset.cshtml" />
     <Content Include="Account\Register.cshtml" />
     <Content Include="Learn.cshtml" />
+    <Content Include="Scripts\displayDate.js" />
     <Content Include="Support.cshtml" />
     <Content Include="Account\Inbox.cshtml" />
     <Content Include="Account\Outbox.cshtml" />
